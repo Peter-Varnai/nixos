@@ -9,6 +9,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
+    ./../../system_packages/nginx/nginx.nix
+    ./backend_service.nix
   ];
 
   boot.loader.grub = {
@@ -28,7 +30,6 @@
     nerd-fonts.fira-code
     nerd-fonts.hack
     nerd-fonts.jetbrains-mono
-
     nerd-fonts.sauce-code-pro
     nerd-fonts.droid-sans-mono
     nerd-fonts.dejavu-sans-mono
@@ -41,10 +42,22 @@
     defaultEditor = true;
   };
 
-  environment.systemPackages = map lib.lowPrio [
-    pkgs.curl
-    pkgs.gitMinimal
-  ];
+  environment = {
+    variables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
+
+    systemPackages =
+      with pkgs;
+      map lib.lowPrio [
+        curl
+        gitMinimal
+        ssh-to-age
+        age
+        sops
+      ];
+  };
 
   security = {
     rtkit.enable = true;

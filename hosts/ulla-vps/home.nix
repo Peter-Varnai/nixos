@@ -11,7 +11,11 @@
     ./../../homeManagerModules/default.nix
   ];
 
+  # DISABLE ALACRITY FOR DESKTOP FREE ENVIROMENTS
   alacritty.enable = false;
+
+  # DECLARES A DIFFERENT TMUX SHORTCUT FOR REMOTE MACHINES
+  programs.tmux.shortcut = "s";
 
   home.username = "peter";
   home.homeDirectory = "/home/peter";
@@ -41,7 +45,16 @@
   programs = {
     starship.enable = true;
 
-    bash.enable = true;
+    bash = {
+      enable = true;
+      enableCompletion = true;
+      shellAliases = {
+        ta = "tmux attach -t";
+      };
+      initExtra = ''
+        complete -F _tmux ta
+      '';
+    };
 
     git = {
       enable = true;

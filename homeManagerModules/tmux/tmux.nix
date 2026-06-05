@@ -1,14 +1,23 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   programs.tmux = {
     enable = true;
-    shortcut = "a";
     baseIndex = 1;
     newSession = true;
     escapeTime = 0;
     clock24 = true;
     historyLimit = 50000;
 
-    plugins = with pkgs.tmuxPlugins; [ better-mouse-mode cpu battery ];
+    plugins = with pkgs.tmuxPlugins; [
+      better-mouse-mode
+      cpu
+      battery
+    ];
 
     extraConfig = ''
           set -g default-terminal "xterm-256color"

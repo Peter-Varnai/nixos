@@ -1,8 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   imports = [
     ./hardware-configuration.nix
+    ./services/postgresql.nix
+    inputs.sops-nix.nixosModules.sops
+    # ./services/petervarnai_net.nix
   ];
 
   # Bootloader.
@@ -32,10 +40,16 @@
     LC_TIME = "de_AT.UTF-8";
   };
 
+  # environment.variables = rec {
+  #   EDITOR = "nvim";
+  #   VISUAL = "nvim";
+  # };
+
   services = {
     # Enable the KDE Plasma Desktop Environment.
     displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
+    blueman.enable = true;
 
     # Configure keymap in X11
     xserver = {
@@ -59,9 +73,25 @@
     };
   };
 
+  hardware = {
+    bluetooth.enable = true;
+    enableRedistributableFirmware = true;
+  };
+
   security = {
     rtkit.enable = true;
     sudo.wheelNeedsPassword = false;
+  };
+
+  # sops-nix secrets
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/home/peter/.config/sops/age/keys.txt";
+
+    secrets = {
+      "openai_api_key" = { };
+    };
   };
 
   users.users.peter = {
@@ -110,8 +140,16 @@
     git
     wget
     curl
+    lsof
+
     htop
+    btop
+
     kdePackages.kate
+    ssh-to-age
+    age
+    sops
+    home-manager
   ];
 
   system.stateVersion = "25.05"; # Did you read the comment?

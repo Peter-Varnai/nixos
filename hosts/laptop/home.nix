@@ -6,47 +6,77 @@
 }:
 
 {
-
   imports = [
     ./../../homeManagerModules/default.nix
+    # ./../stream_hub/stream_hub-user.nix
   ];
 
-  home.username = "peter";
-  home.homeDirectory = "/home/peter";
-  home.stateVersion = "25.05";
+  # DECLARES A DIFFERENT TMUX SHORTCUT FOR REMOTE MACHINES
+  programs.tmux.shortcut = "a";
 
-  home.packages = with pkgs; [
-    brave
-    spotify
-    telegram-desktop
-    lf
+  home = {
+    username = "peter";
+    homeDirectory = "/home/peter";
+    packages = with pkgs; [
+      brave
+      blender
+      vlc
+      deluge
+      discord
+      spotify
+      telegram-desktop
+      lf
+      neofetch
 
-    # developing tools
-    neofetch
-    tree-sitter
-    clang
-    rustup
-    cargo-watch
-    zip
-    insomnia
-    gnumake
-    pkg-config
-    nixos-anywhere
+      # build tools / compilers
+      clang
+      rustup
+      gnumake
+      pkg-config
+      nodejs_24
 
-    # lsp
-    nixd
-    nixfmt-rfc-style
-    nodePackages.typescript-language-server
-    nodePackages.typescript
-    nodePackages.vscode-langservers-extracted
-    lua-language-server
-    glsl_analyzer
-  ];
+      # developing tools
+      tree-sitter
+      cargo-watch
+      insomnia
+      sqlite
+      usql
+
+      # system utilities
+      nixos-anywhere
+      zip
+
+      # lsp
+      nixd
+      nixfmt-rfc-style
+      nodePackages.typescript-language-server
+      nodePackages.typescript
+      nodePackages.vscode-langservers-extracted
+      nodePackages.eslint
+      lua-language-server
+      glsl_analyzer
+      eslint
+    ];
+
+    sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+      OPENAI_API_KEY = "$(cat /run/secrets/openai_api_key)";
+    };
+
+    stateVersion = "25.05";
+  };
 
   programs = {
     starship.enable = true;
 
-    bash.enable = true;
+    bash = {
+      enable = true;
+      enableCompletion = true;
+      shellAliases = {
+        ta = "tmux attach -t";
+      };
+    };
 
     git = {
       enable = true;

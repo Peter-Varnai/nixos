@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   toLua = str: ''
     lua << EOF
@@ -6,7 +11,8 @@ let
     EOF
   '';
   # toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
-in {
+in
+{
   programs.neovim = {
     enable = true;
     viAlias = true;
@@ -14,9 +20,22 @@ in {
     vimdiffAlias = true;
 
     extraPackages = with pkgs; [ wl-clipboard ];
+    extraConfig = ''
+      set autoread
+      set updatetime=1000
+
+      augroup auto_reload
+        autocmd!
+        autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
+      augroup END
+    '';
 
     extraLuaConfig = ''
-      ${builtins.readFile ./extraLuaConfig.lua}
+      ${builtins.readFile ./lua/options.lua}
+      ${builtins.readFile ./lua/keymaps.lua}
+      ${builtins.readFile ./lua/devicons.lua}
+      ${builtins.readFile ./lua/cmp.lua}
+      ${builtins.readFile ./lua/lsp.lua}
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -29,12 +48,6 @@ in {
       plenary-nvim
       nvim-web-devicons
       nui-nvim
-      {
-        plugin = pkgs.vimPlugins.nvim-web-devicons;
-        config = toLua ''
-          require('nvim-web-devicons').setup()
-        '';
-      }
       {
         plugin = neo-tree-nvim;
         config = toLua ''
@@ -73,15 +86,20 @@ in {
       nvim-treesitter-refactor
 
       {
-        plugin = (nvim-treesitter.withPlugins (p: [
-          p.tree-sitter-nix
-          p.tree-sitter-vim
-          p.tree-sitter-bash
-          p.tree-sitter-lua
-          p.tree-sitter-python
-          p.tree-sitter-json
-          p.tree-sitter-rust
-        ]));
+        plugin = (
+          nvim-treesitter.withPlugins (p: [
+            p.tree-sitter-nix
+            p.tree-sitter-vim
+            p.tree-sitter-bash
+            p.tree-sitter-lua
+            p.tree-sitter-python
+            p.tree-sitter-json
+            p.tree-sitter-rust
+            p.javascript
+            p.typescript
+            p.tsx
+          ])
+        );
       }
 
       {
@@ -99,24 +117,6 @@ in {
               })
 
           require('telescope').load_extension('fzf')
-        '';
-      }
-
-      {
-        plugin = ChatGPT-nvim;
-        config = toLua ''
-          require("chatgpt").setup({
-            openai_params = {
-              model = "gpt-4.1",
-              max_tokens = 2048, 
-            },
-            openai_edit_params = {
-              model = "gpt-4.1",
-              max_tokens = 2048,
-            },
-              api_key_cmd = "echo $OPENAI_API_KEY",
-              })
-
         '';
       }
 
