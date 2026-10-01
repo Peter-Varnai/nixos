@@ -4,18 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -27,17 +17,14 @@
       self,
       nixpkgs,
       home-manager,
-      disko,
       opencode,
       ...
     }@inputs:
     {
       nixosConfigurations = {
-
         dev = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/laptop/configuration.nix
+            ./hosts/peters_machine/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -46,27 +33,24 @@
 
                 extraSpecialArgs = { inherit inputs; };
 
-                users.peter = import ./hosts/laptop/home.nix;
+                users.peter = import ./hosts/peters_machine/home.nix;
               };
             }
           ];
         };
+      };
 
-        ulla-vps = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            disko.nixosModules.disko
-            ./hosts/ulla-vps/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.peter = import ./hosts/ulla-vps/home.nix;
-              };
-            }
-          ];
+      homeConfigurations = {
+        peter = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs; };
+          modules = [ ./hosts/foreus/home.nix ];
+        };
+
+        "peter@macbook" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+          extraSpecialArgs = { inherit inputs; };
+          modules = [ ./hosts/macbook/home.nix ];
         };
       };
     };

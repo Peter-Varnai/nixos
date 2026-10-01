@@ -1,5 +1,0 @@
-require('options')
-require('keymaps')
-require('devicons')
-require('cmp')
-require('lsp')

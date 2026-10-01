@@ -1,9 +1,0 @@
-keys:
-  - &dev age1y55zryh95cgv4vuuhl8zfjy02wt8md4dm9jv5hrsech0q2qljgrqec7huu
-  - &remote age1hdpewd4clqlms6teuueqzmcxg462q3mufn9nr4npswvtfqa5rakslmrm2w
-creation_rules:
-    - path_regex: secrets/secrets.yaml$
-      key_groups:
-        - age:
-          - *dev
-          - *remote
