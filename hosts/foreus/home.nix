@@ -41,8 +41,8 @@
   '';
 
   home = {
-    username = "peter";
-    homeDirectory = "/Users/peter";
+    username = "petervarnai";
+    homeDirectory = "/Users/petervarnai";
 
     packages = with pkgs; [
       lf
