@@ -36,7 +36,7 @@
     bind C-Right resize-pane -R 5
   '';
 
-  programs.neovim.extraLuaConfig = lib.mkAfter ''
+  programs.neovim.initLua = lib.mkAfter ''
     vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { noremap = true, silent = true })
   '';
 
@@ -46,10 +46,10 @@
 
     packages = with pkgs; [
       lf
-      neofetch
+      fastfetch
       zip
     ];
 
-    stateVersion = "25.05";
+    stateVersion = "26.05";
   };
 }

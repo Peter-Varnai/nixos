@@ -24,7 +24,7 @@
       spotify
       telegram-desktop
       lf
-      neofetch
+      fastfetch
       insomnia
 
       nixos-anywhere

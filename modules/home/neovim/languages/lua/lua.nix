@@ -23,6 +23,6 @@ in
       "tree-sitter-lua"
     ];
 
-    programs.neovim.extraLuaConfig = lib.mkAfter (builtins.readFile ./lua.lua);
+    programs.neovim.initLua = lib.mkAfter (builtins.readFile ./lua.lua);
   };
 }

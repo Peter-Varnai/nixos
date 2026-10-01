@@ -4,13 +4,7 @@
   lib,
   ...
 }:
-let
-  toLua = str: ''
-    lua << EOF
-    ${str}
-    EOF
-  '';
-in
+
 {
   options.neovim.treesitter.grammars = lib.mkOption {
     type = lib.types.listOf lib.types.str;
@@ -40,7 +34,7 @@ in
         augroup END
       '';
 
-      extraLuaConfig = ''
+      initLua = ''
         ${builtins.readFile ./lua/options.lua}
         ${builtins.readFile ./lua/keymaps.lua}
         ${builtins.readFile ./lua/devicons.lua}
@@ -61,21 +55,23 @@ in
 
         {
           plugin = neo-tree-nvim;
-          config = toLua (builtins.readFile ./lua/neo-tree.lua);
+          type = "lua";
+          config = builtins.readFile ./lua/neo-tree.lua;
         }
 
         {
           plugin = onedarker-nvim;
-          config = toLua (builtins.readFile ./lua/colorscheme.lua);
+          type = "lua";
+          config = builtins.readFile ./lua/colorscheme.lua;
         }
 
         {
           plugin = comment-nvim;
-          config = toLua (builtins.readFile ./lua/comment.lua);
+          type = "lua";
+          config = builtins.readFile ./lua/comment.lua;
         }
 
         nvim-treesitter
-        nvim-treesitter-refactor
 
         {
           plugin = (
@@ -93,7 +89,8 @@ in
 
         {
           plugin = telescope-nvim;
-          config = toLua (builtins.readFile ./lua/telescope.lua);
+          type = "lua";
+          config = builtins.readFile ./lua/telescope.lua;
         }
 
         telescope-fzf-native-nvim

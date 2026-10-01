@@ -16,13 +16,13 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.neovim.extraPackages = with pkgs; [
-      nodePackages.vscode-langservers-extracted
+      vscode-langservers-extracted
     ];
 
     neovim.treesitter.grammars = [
       "tree-sitter-json"
     ];
 
-    programs.neovim.extraLuaConfig = lib.mkAfter (builtins.readFile ./html-css.lua);
+    programs.neovim.initLua = lib.mkAfter (builtins.readFile ./html-css.lua);
   };
 }

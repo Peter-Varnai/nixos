@@ -42,9 +42,9 @@
 
       git = {
         enable = true;
-        userName = "Peter-Varnai";
-        userEmail = "peter@varnai.dev";
-        extraConfig = {
+        settings = {
+          user.name = "Peter-Varnai";
+          user.email = "peter@varnai.dev";
           credential.helper = "cache";
         };
       };

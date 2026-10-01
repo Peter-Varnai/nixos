@@ -32,6 +32,6 @@ in
       "tree-sitter-rust"
     ];
 
-    programs.neovim.extraLuaConfig = lib.mkAfter (builtins.readFile ./rust.lua);
+    programs.neovim.initLua = lib.mkAfter (builtins.readFile ./rust.lua);
   };
 }

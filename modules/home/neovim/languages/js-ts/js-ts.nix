@@ -20,9 +20,9 @@ in
     ];
 
     programs.neovim.extraPackages = with pkgs; [
-      nodePackages.typescript-language-server
-      nodePackages.typescript
-      nodePackages.eslint
+      typescript-language-server
+      typescript
+      eslint
     ];
 
     neovim.treesitter.grammars = [
@@ -31,6 +31,6 @@ in
       "tsx"
     ];
 
-    programs.neovim.extraLuaConfig = lib.mkAfter (builtins.readFile ./js-ts.lua);
+    programs.neovim.initLua = lib.mkAfter (builtins.readFile ./js-ts.lua);
   };
 }

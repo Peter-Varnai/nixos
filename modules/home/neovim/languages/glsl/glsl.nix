@@ -19,6 +19,6 @@ in
       glsl_analyzer
     ];
 
-    programs.neovim.extraLuaConfig = lib.mkAfter (builtins.readFile ./glsl.lua);
+    programs.neovim.initLua = lib.mkAfter (builtins.readFile ./glsl.lua);
   };
 }

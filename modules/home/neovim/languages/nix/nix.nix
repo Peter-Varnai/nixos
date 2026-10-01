@@ -17,13 +17,13 @@ in
   config = lib.mkIf cfg.enable {
     programs.neovim.extraPackages = with pkgs; [
       nixd
-      nixfmt-rfc-style
+      nixfmt
     ];
 
     neovim.treesitter.grammars = [
       "tree-sitter-nix"
     ];
 
-    programs.neovim.extraLuaConfig = lib.mkAfter (builtins.readFile ./nix.lua);
+    programs.neovim.initLua = lib.mkAfter (builtins.readFile ./nix.lua);
   };
 }
