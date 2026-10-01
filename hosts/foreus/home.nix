@@ -13,11 +13,12 @@
 
   home = {
     username = "peter";
-    homeDirectory = "/home/peter";
+    homeDirectory = "/Users/peter";
 
     packages = with pkgs; [
       lf
       neofetch
+      zip
     ];
 
     stateVersion = "25.05";
