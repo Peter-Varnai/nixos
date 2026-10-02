@@ -8,12 +8,31 @@
 {
   imports = [
     ../../modules/home
+    ./psql.nix
   ];
 
   wireshark.enable = false;
+  alacritty.enable = false;
+
+  programs.git.settings.user.email = "pv@foreusgroup.com";
+
+  # macOS login shell is zsh
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    profileExtra = ''
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    '';
+  };
+
+  # /usr/bin/vi shadows the nix-provided vi on macOS PATH
+  home.shellAliases.vi = "nvim";
+
+  # Prefix is Ctrl+a, same as NixOS; the terminals map Cmd+a to Ctrl+a
+  programs.tmux.shortcut = "a";
 
   programs.tmux.extraConfig = ''
-    # macOS: Option doesn't send Meta; use prefix-based pane keys
+    # macOS: use prefix-based pane keys instead of Option/Ctrl+Tab
     unbind -n M-Up
     unbind -n M-Down
     unbind -n M-Left
@@ -30,10 +49,11 @@
     bind Left  select-pane -L
     bind Right select-pane -R
 
-    bind C-Up    resize-pane -U 5
-    bind C-Down  resize-pane -D 5
-    bind C-Left  resize-pane -L 5
-    bind C-Right resize-pane -R 5
+    # Shift, not Ctrl: macOS takes Ctrl+arrows for Mission Control/Spaces
+    bind -r S-Up    resize-pane -U 5
+    bind -r S-Down  resize-pane -D 5
+    bind -r S-Left  resize-pane -L 5
+    bind -r S-Right resize-pane -R 5
   '';
 
   programs.neovim.initLua = lib.mkAfter ''

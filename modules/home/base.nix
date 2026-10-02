@@ -29,22 +29,24 @@
       VISUAL = "nvim";
     };
 
+    # Applied to every enabled shell (bash, zsh)
+    home.shellAliases = {
+      ta = "tmux attach -t";
+    };
+
     programs = {
       starship.enable = true;
 
       bash = {
         enable = true;
         enableCompletion = true;
-        shellAliases = {
-          ta = "tmux attach -t";
-        };
       };
 
       git = {
         enable = true;
         settings = {
           user.name = "Peter-Varnai";
-          user.email = "peter@varnai.dev";
+          user.email = lib.mkDefault "peter@varnai.dev";
           credential.helper = "cache";
         };
       };

@@ -16,7 +16,8 @@
     plugins = with pkgs.tmuxPlugins; [
       better-mouse-mode
       battery
-    ] ++ lib.optional pkgs.stdenv.isLinux cpu;
+      cpu
+    ];
 
     extraConfig = ''
           set -g default-terminal "xterm-256color"
@@ -49,7 +50,7 @@
           bind c new-window -c "#{pane_current_path}"
 
           set -g status-right '#[fg=black,bg=color15] #{cpu_percentage} |#[fg=black] #{battery_percentage}  %H:%M '
-          ${lib.optionalString pkgs.stdenv.isLinux "run-shell ${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu/cpu.tmux"}
+          run-shell ${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu/cpu.tmux
           run-shell ${pkgs.tmuxPlugins.battery}/share/tmux-plugins/battery/battery.tmux
 
           # Allow mouse scroll to enter copy mode automatically
