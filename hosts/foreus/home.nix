@@ -23,6 +23,12 @@
     profileExtra = ''
       eval "$(/opt/homebrew/bin/brew shellenv)"
     '';
+    envExtra = ''
+      # Nix daemon PATH recovery (in case macOS update overwrites /etc/zshrc)
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+    '';
   };
 
   # /usr/bin/vi shadows the nix-provided vi on macOS PATH
@@ -68,6 +74,9 @@
       lf
       fastfetch
       zip
+      gitui
+      diffnav # git diff | diffnav: file tree + delta rendering
+
     ];
 
     stateVersion = "26.05";

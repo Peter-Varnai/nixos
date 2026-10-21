@@ -18,6 +18,7 @@
     neovim.languages = {
       jsTs.enable = true;
       rust.enable = true;
+      go.enable = true;
       nix.enable = true;
       lua.enable = true;
       htmlCss.enable = true;
@@ -37,6 +38,13 @@
     programs = {
       starship.enable = true;
 
+      # Ctrl-T files, Ctrl-R history, Alt-C cd
+      fzf = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
+      };
+
       bash = {
         enable = true;
         enableCompletion = true;
@@ -48,6 +56,17 @@
           user.name = "Peter-Varnai";
           user.email = lib.mkDefault "peter@varnai.dev";
           credential.helper = "cache";
+        };
+      };
+
+      # Replaces `less` as git's pager: syntax highlighting, side-by-side, n/N to jump between files
+      delta = {
+        enable = true;
+        enableGitIntegration = true;
+        options = {
+          navigate = true;
+          side-by-side = true;
+          line-numbers = true;
         };
       };
 

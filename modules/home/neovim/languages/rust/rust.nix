@@ -16,7 +16,10 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      rustup
+      cargo
+      rustc
+      clippy
+      rustfmt
       cargo-watch
       clang
       gnumake
@@ -27,6 +30,8 @@ in
     programs.neovim.extraPackages = with pkgs; [
       rust-analyzer
     ];
+
+    home.sessionVariables.RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
 
     neovim.treesitter.grammars = [
       "tree-sitter-rust"

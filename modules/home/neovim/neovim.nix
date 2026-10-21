@@ -20,7 +20,11 @@
       vimdiffAlias = true;
 
       extraPackages = with pkgs;
-        lib.optionals pkgs.stdenv.isLinux [
+        [
+          ripgrep
+          fd
+        ]
+        ++ lib.optionals pkgs.stdenv.isLinux [
           (if config.wayland.enable then wl-clipboard else xclip)
         ];
 
@@ -52,6 +56,7 @@
         plenary-nvim
         nvim-web-devicons
         nui-nvim
+        editorconfig-nvim
 
         {
           plugin = neo-tree-nvim;
