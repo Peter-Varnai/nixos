@@ -58,6 +58,12 @@
           extraSpecialArgs = { inherit inputs; };
           modules = [ ./hosts/foreus/home.nix ];
         };
+
+        debian = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs; };
+          modules = [ ./hosts/debian/home.nix ];
+        };
       };
     };
 }
